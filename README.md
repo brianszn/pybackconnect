@@ -65,7 +65,7 @@ pybackconnect/
 
 ## ✅ Requisitos
 
-- Python 3.x instalado nas duas máquinas
+- Python 3.x instalado na máquina do atacante (na máquina alvo, você pode fazer um executável com o pyinstaller ou então instalar o python)
 - Rede com acesso entre cliente e servidor (pode usar tunelamento ou NAT se necessário)
 
 ---
