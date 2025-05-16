@@ -1,6 +1,6 @@
 # 🐍 Reverse Shell com Python (Conexão Invertida)
 
-Este projeto demonstra como criar uma **reverse shell simples em Python**, utilizando sockets. Ele permite que uma máquina atacante (handler) controle remotamente outra máquina que executa o `server.py`.
+Este projeto demonstra como criar uma **reverse shell simples em Python**, utilizando sockets. Ele permite que uma máquina atacante (handler) controle remotamente outra máquina que executa o `server.py`, é um projeto simples com o intuito de estudar sobre a biblioteca Sockets.
 
 > ⚠️ **Aviso:** Este código é apenas para fins educacionais e deve ser utilizado **somente em ambientes controlados**, com total consentimento. O uso indevido pode ser ilegal.
 
