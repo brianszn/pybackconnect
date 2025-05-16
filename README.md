@@ -76,4 +76,4 @@ Esse projeto **não possui autenticação, criptografia ou segurança**. É uma 
 
 ---
 
-Feito com fins didáticos. 🧠
+Feito com fins didáticos e para o estudo da biblioteca Socket. 🧠
